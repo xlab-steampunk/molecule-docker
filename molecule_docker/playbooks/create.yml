@@ -48,6 +48,13 @@
       when: not item.pre_build_image | default(false)
       register: platforms
 
+    - name: Copy files from scenario directory for image building
+      copy:
+        src: "{{ molecule_scenario_directory }}/"
+        dest: "{{ molecule_ephemeral_directory }}"
+        mode: "0600"
+      when: not item.pre_build_image | default(false)
+
     - name: Discover local Docker images
       docker_image_info:
         name: "molecule_local/{{ item.item.name }}"
